@@ -1,53 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CryptoVision - Crypto Dashboard</title>
+    <link rel="icon" type="image/png" href="image/image bitcoin.png">
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <nav>
-        <div style="display: flex; flex-direction: row; align-items: center; gap: 150px; ">
-            <div>
-                <img src="image/image NBA & NFL.png" alt="" style="width: 200px; height: 100px;">
-            </div>
-            <div style="display: flex; flex-direction: row; gap: 100px;">
-                <div>
-                    <a href="">Home</a>
-                </div>
-                <div>
-                    <a href="">NFL</a>
-                </div>
-                <div>
-                    <a href="">Schedule</a>
-                </div>
-                <div>
-                    <a href="">Standings</a>
-                </div>
-                <div>
-                    <a href="">Players</a>
-                </div>
-                <div>
-                    <a href="">About</a>
-                </div>
-            </div>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">₿</div>
+            <span>Crypto<span class="brand-blue">Vision</span></span>
         </div>
-    </nav>
 
-    <main>
-        <section>
-            <div id="nba"></div>
-            <div id="nfl"></div>
-            <div id="nfl"></div>
-            <div id="nfl"></div>
+        <p class="menu-label">MENU UTAMA</p>
+        <a href="#" class="menu active"><span>▦</span> Dashboard</a>
+        <a href="#market" class="menu"><span>◈</span> Markets</a>
+        <a href="#chart-section" class="menu"><span>▥</span> Analytics</a>
+
+        <div class="sidebar-bottom">
+            <div class="status-dot"></div>
+            <span>Market data connected</span>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Market Overview</h1>
+                <p>Explore cryptocurrency market data</p>
+            </div>
+
+            <div class="top-right">
+                <div class="live-status">
+                    <span class="pulse"></span>
+                    LIVE DATA
+                </div>
+                <button id="refreshBtn" class="refresh-btn">↻ Refresh</button>
+            </div>
+        </header>
+
+        <section class="welcome">
+            <div>
+                <span class="eyebrow">CRYPTO MARKET DASHBOARD</span>
+                <h2>Explore the world of <span>Crypto.</span></h2>
+                <p>Monitor cryptocurrency prices, market capitalization, and market movements in one place.</p>
+            </div>
+            <div class="welcome-symbol">₿</div>
         </section>
+
+        <section class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Bitcoin Price</span>
+                    <span class="stat-icon orange">₿</span>
+                </div>
+                <h2 id="btcPrice">Loading...</h2>
+                <p id="btcChange" class="change">Fetching data...</p>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Ethereum Price</span>
+                    <span class="stat-icon purple">Ξ</span>
+                </div>
+                <h2 id="ethPrice">Loading...</h2>
+                <p id="ethChange" class="change">Fetching data...</p>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Solana Price</span>
+                    <span class="stat-icon green">◎</span>
+                </div>
+                <h2 id="solPrice">Loading...</h2>
+                <p id="solChange" class="change">Fetching data...</p>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Listed Assets</span>
+                    <span class="stat-icon blue">◈</span>
+                </div>
+                <h2 id="coinCount">Loading...</h2>
+                <p class="neutral">Assets returned by API</p>
+            </article>
+
+        </section>
+
+        <section class="content-grid" id="chart-section">
+
+            <article class="panel chart-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Bitcoin Live Updates</h3>
+                        <p>Price snapshots every 2 seconds · USD</p>
+                    </div>
+                    <span class="chart-tag">BTC / USD</span>
+                </div>
+
+                <div class="chart-wrap">
+                    <div id="btcChart"></div>
+                </div>
+
+                <p id="chartMessage" class="small-message"></p>
+            </article>
+
+            <article class="panel movers-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Top Movers</h3>
+                        <p>Largest 24-hour changes in returned data</p>
+                    </div>
+                </div>
+
+                <div id="topMovers" class="movers-list">
+                    <p class="loading">Loading market data...</p>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="panel market-panel" id="market">
+
+            <div class="market-heading">
+                <div>
+                    <h3>Cryptocurrency Markets</h3>
+                    <p>Explore available cryptocurrency data</p>
+                </div>
+
+                <div class="market-controls">
+                    <input type="text" id="searchInput" placeholder="Search coin or symbol...">
+
+                    <select id="sortSelect">
+                        <option value="rank">Rank</option>
+                        <option value="price">Highest price</option>
+                        <option value="change">24h change</option>
+                        <option value="volume">24h volume</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NAME</th>
+                            <th>PRICE (USD)</th>
+                            <th>24H CHANGE</th>
+                            <th>MARKET CAP</th>
+                            <th>VOLUME (24H)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="coinTable">
+                        <tr>
+                            <td colspan="6" class="loading">
+                                Loading cryptocurrency data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-footer">
+                <span id="resultCount">Loading results...</span>
+                <span>Source: CoinPaprika API</span>
+            </div>
+
+        </section>
+
+        <footer>
+            <span>CryptoVision © 2026</span>
+            <span id="lastUpdated">Waiting for API data...</span>
+        </footer>
+
     </main>
 
     <script src="main.js"></script>
+
 </body>
 
 </html>
